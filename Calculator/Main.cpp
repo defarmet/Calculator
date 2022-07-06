@@ -3,75 +3,98 @@
 wxBEGIN_EVENT_TABLE(Main, wxFrame)
 wxEND_EVENT_TABLE()
 
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxPoint(30, 30), wxSize(800, 600))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(555, 186))
 {
-	wxGridSizer grid = wxGridSizer(7, 5, 0, 0);
-	display = wxTextCtrl(this, 9999, style = wxTE_RIGHT | wxTE_READONLY);
+	wxFlexGridSizer *box = new wxFlexGridSizer(2, 1, 0, 0);
+	wxFlexGridSizer *rows = new wxFlexGridSizer(3, 0, 0);
+	wxGridSizer *s1 = new wxGridSizer(4, 2, 0, 0);
+	wxGridSizer *s2 = new wxGridSizer(2, 1, 0, 0);
+	wxGridSizer *s2_1 = new wxGridSizer(2, 1, 0, 0);
+	wxGridSizer *s3 = new wxGridSizer(4, 4, 0, 0);
 
-	wxFont font(24, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY);
+	box->Add(display, 0, wxEXPAND | wxALL);
+
+	buttons = new wxButton *[27];
+
+	wxFont button_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
 
 	for (int i = 0; i < 27; i++) {
-		buttons[i] = wxButton(this, 10000 + i);
-		buttons[i]->SetFont(font);
-		grid.Add(&buttons[i], 1, wxEXPAND | wxALL);
-
-		buttons[i].Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
+		buttons[i] = new wxButton(this, 10000 + i);
+		buttons[i]->SetFont(button_font);
+		//buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
+		if (i < 10)
+			buttons[i]->SetLabel(std::to_string(i));
 	}
 
-	this->SetSizer(&grid);
-	grid.Layout();
+	buttons[10]->SetLabel("A");
+	buttons[11]->SetLabel("B");
+	buttons[12]->SetLabel("C");
+	buttons[13]->SetLabel("D");
+	buttons[14]->SetLabel("E");
+	buttons[15]->SetLabel("F");
+	buttons[16]->SetLabel("+");
+	buttons[17]->SetLabel("-");
+	buttons[18]->SetLabel("*");
+	buttons[19]->SetLabel("/");
+	buttons[20]->SetLabel("MOD");
+	buttons[21]->SetLabel("CR");
+	buttons[22]->SetLabel("=");
+	buttons[23]->SetLabel("BIN");
+	buttons[24]->SetLabel("OCT");
+	buttons[25]->SetLabel("DEC");
+	buttons[26]->SetLabel("HEX");
+
+	s1->Add(buttons[10], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[11], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[13], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[14], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[23], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[24], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[25], 1, wxEXPAND | wxALL);
+	s1->Add(buttons[26], 1, wxEXPAND | wxALL);
+	rows->Add(s1, 1, wxEXPAND);
+
+	s2_1->Add(buttons[12], 1, wxEXPAND | wxALL);
+	s2_1->Add(buttons[15], 1, wxEXPAND | wxALL);
+	s2->Add(s2_1, 1, wxEXPAND);
+	s2->Add(buttons[22], 1, wxEXPAND | wxALL);
+	rows->Add(s2, 1, wxEXPAND);
+
+	s3->Add(buttons[7], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[8], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[9], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[19], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[4], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[5], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[6], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[18], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[1], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[2], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[3], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[17], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[0], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[21], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[20], 1, wxEXPAND | wxALL);
+	s3->Add(buttons[16], 1, wxEXPAND | wxALL);
+	rows->Add(s3, 1, wxEXPAND);
+
+	box->Add(rows, 1, wxEXPAND);
+
+	this->SetSizer(box);
+	s1->Layout();
+	s2->Layout();
+	s3->Layout();
+	rows->Layout();
+	box->Layout();
 }
 
 Main::~Main()
 {
+	delete[] buttons;
+	delete display;
 }
 
 void Main::OnButtonClicked(wxCommandEvent &e)
 {
-	unsigned char index = e.GetId() - 10000;
-	char value = index < 16 ? index : -1;
-
-	if (first_click) {
-		for (int mines = 30; mines;) {
-			int rx = rand() % W;
-			int ry = rand() % H;
-
-			if (field[ry * W + rx] == 0 && rx != x && ry != y) {
-				field[ry * W + rx] = -1;
-				mines--;
-			}
-		}
-
-		first_click = false;
-	}
-
-	btn[y * W + x]->Enable(false);
-
-	if (field[y * W + x] == -1) {
-		wxMessageBox("Game Over");
-
-		first_click = true;
-		for (int y = 0; y < H; y++) {
-			for (int x = 0; x < W; x++) {
-				field[y * W + x] = 0;
-				btn[y * W + x]->SetLabel("");
-				btn[y * W + x]->Enable(true);
-			}
-		}
-	} else {
-		int count = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if (y + i >= 0 && y + i < H && x + j >= 0 && x + j < W) {
-					if (field[(y + i) * W + (x + j)] == -1)
-						count++;
-				}
-			}
-		}
-
-		if (count > 0)
-			btn[y * W + x]->SetLabel(std::to_string(count));
-	}
-
-	e.Skip();
 }

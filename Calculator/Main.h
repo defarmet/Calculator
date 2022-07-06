@@ -6,8 +6,8 @@ public:
 	Main();
 	~Main();
 
-	wxButton buttons[27];
-	wxStaticText display;
+	wxButton **buttons;
+	wxTextCtrl *display;
 	unsigned char mode = 0;
 
 	void OnButtonClicked(wxCommandEvent &e);
