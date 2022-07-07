@@ -8,7 +8,7 @@ public:
 
 	wxButton **buttons;
 	wxTextCtrl *display;
-	unsigned char mode = 0;
+	unsigned char mode = 2;
 
 	void OnButtonClicked(wxCommandEvent &e);
 

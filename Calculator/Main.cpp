@@ -3,7 +3,7 @@
 wxBEGIN_EVENT_TABLE(Main, wxFrame)
 wxEND_EVENT_TABLE()
 
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(555, 186))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(577, 186))
 {
 	wxFlexGridSizer *box = new wxFlexGridSizer(2, 1, 0, 0);
 	wxFlexGridSizer *rows = new wxFlexGridSizer(3, 0, 0);
@@ -22,7 +22,7 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	for (int i = 0; i < 27; i++) {
 		buttons[i] = new wxButton(this, 10000 + i);
 		buttons[i]->SetFont(button_font);
-		//buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
+		buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
 		if (i < 10)
 			buttons[i]->SetLabel(std::to_string(i));
 	}
@@ -82,11 +82,11 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	box->Add(rows, 1, wxEXPAND);
 
 	this->SetSizer(box);
-	s1->Layout();
+	/*s1->Layout();
 	s2->Layout();
 	s3->Layout();
 	rows->Layout();
-	box->Layout();
+	box->Layout();*/
 }
 
 Main::~Main()
@@ -97,4 +97,81 @@ Main::~Main()
 
 void Main::OnButtonClicked(wxCommandEvent &e)
 {
+	int index = e.GetId() - 10000;
+	switch (index) {
+	case 8:
+	case 9:
+		if (mode < 2)
+			break;
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 6:
+	case 7:
+		if (mode < 1)
+			break;
+	case 0:
+	case 1:
+		*display << index;
+		break;
+
+	case 10:
+	case 11:
+	case 12:
+	case 13:
+	case 14:
+	case 15:
+		if (mode == 3)
+			*display << (char)('A' + (index - 10));
+		break;
+
+	case 16:
+		*display << '+';
+		break;
+
+	case 17:
+		*display << '-';
+		break;
+
+	case 18:
+		*display << '*';
+		break;
+
+	case 19:
+		*display << '/';
+		break;
+
+	case 20:
+		*display << '%';
+		break;
+
+	case 21:
+		display->Clear();
+		break;
+
+	case 22:
+		*display << '=';
+		break;
+
+	case 23:
+		mode = 0;
+		display->Clear();
+		break;
+
+	case 24:
+		mode = 1;
+		display->Clear();
+		break;
+
+	case 25:
+		mode = 2;
+		display->Clear();
+		break;
+
+	case 26:
+		mode = 3;
+		display->Clear();
+		break;
+	}
 }
