@@ -98,7 +98,8 @@ Main::~Main()
 void Main::OnButtonClicked(wxCommandEvent &e)
 {
 	int index = e.GetId() - 10000;
-	switch (index) {
+	*display << buttons[index]->GetLabel();
+	/*switch (index) {
 	case 8:
 	case 9:
 		if (mode < 2)
@@ -173,5 +174,5 @@ void Main::OnButtonClicked(wxCommandEvent &e)
 		mode = 3;
 		display->Clear();
 		break;
-	}
+	}*/
 }
