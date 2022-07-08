@@ -131,10 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonFactory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ButtonFactory.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Program.h" />
   </ItemGroup>

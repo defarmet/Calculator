@@ -1,7 +1,5 @@
 #include "Main.h"
-
-wxBEGIN_EVENT_TABLE(Main, wxFrame)
-wxEND_EVENT_TABLE()
+#include "ButtonFactory.h"
 
 Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(600, 200))
 {
@@ -17,33 +15,30 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 
 	buttons = new wxButton *[27];
 
-	wxFont button_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	int i;
+	for (i = 0; i < 10; i++)
+		buttons[i] = ButtonFactory::CreateButton(this, i, std::to_string(i));
 
-	for (int i = 0; i < 27; i++) {
-		buttons[i] = new wxButton(this, 10000 + i);
-		buttons[i]->SetFont(button_font);
-		buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
-		if (i < 10)
-			buttons[i]->SetLabel(std::to_string(i));
-	}
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "A");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "B");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "C");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "D");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "E");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "F");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "+");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "-");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "*");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "/");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "MOD");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "CR");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "=");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "BIN");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "OCT");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "DEC");
+	buttons[i] = ButtonFactory::CreateButton(this, i++, "HEX");
 
-	buttons[10]->SetLabel("A");
-	buttons[11]->SetLabel("B");
-	buttons[12]->SetLabel("C");
-	buttons[13]->SetLabel("D");
-	buttons[14]->SetLabel("E");
-	buttons[15]->SetLabel("F");
-	buttons[16]->SetLabel("+");
-	buttons[17]->SetLabel("-");
-	buttons[18]->SetLabel("*");
-	buttons[19]->SetLabel("/");
-	buttons[20]->SetLabel("MOD");
-	buttons[21]->SetLabel("CR");
-	buttons[22]->SetLabel("=");
-	buttons[23]->SetLabel("BIN");
-	buttons[24]->SetLabel("OCT");
-	buttons[25]->SetLabel("DEC");
-	buttons[26]->SetLabel("HEX");
+	for (i = 0; i < 27; i++)
+		//buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
 
 	s1->Add(buttons[10], 1, wxEXPAND);
 	s1->Add(buttons[11], 1, wxEXPAND);

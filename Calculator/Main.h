@@ -11,6 +11,4 @@ public:
 	unsigned char mode = 2;
 
 	void OnButtonClicked(wxCommandEvent &e);
-
-	wxDECLARE_EVENT_TABLE();
 };
