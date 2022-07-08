@@ -4,6 +4,6 @@
 
 class ButtonFactory {
 public:
-	static wxButton *CreateButton(wxWindow *win, int index, std::string label);
+	static wxButton *CreateButton(wxFrame *win, int index, std::string label);
 };
 

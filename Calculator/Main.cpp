@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "ButtonFactory.h"
 
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(600, 200))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(620, 210))
 {
 	wxFlexGridSizer *box = new wxFlexGridSizer(2, 1, 0, 0);
 	wxFlexGridSizer *rows = new wxFlexGridSizer(3, 0, 0);
@@ -19,26 +19,26 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	for (i = 0; i < 10; i++)
 		buttons[i] = ButtonFactory::CreateButton(this, i, std::to_string(i));
 
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "A");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "B");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "C");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "D");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "E");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "F");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "+");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "-");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "*");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "/");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "MOD");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "CR");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "=");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "BIN");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "OCT");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "DEC");
-	buttons[i] = ButtonFactory::CreateButton(this, i++, "HEX");
+	buttons[i] = ButtonFactory::CreateButton(this, i, "A");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "B");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "C");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "D");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "E");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "F");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "+");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "-");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "*");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "/");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "MOD");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "CR");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "=");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "BIN");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "OCT");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "DEC");
+	buttons[++i] = ButtonFactory::CreateButton(this, i, "HEX");
 
 	for (i = 0; i < 27; i++)
-		//buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
+		buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::OnButtonClicked, this);
 
 	s1->Add(buttons[10], 1, wxEXPAND);
 	s1->Add(buttons[11], 1, wxEXPAND);
