@@ -4,6 +4,9 @@
 
 class ButtonFactory {
 public:
-	static wxButton *CreateButton(wxFrame *win, int index, std::string label);
+	static void create_buttons(wxFrame *win, wxButton **buttons);
+
+private:
+	static wxButton *create_button(wxFrame *win, int index, std::string label);
 };
 
