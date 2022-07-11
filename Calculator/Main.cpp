@@ -1,7 +1,7 @@
 #include "Main.h"
 #include "ButtonFactory.h"
 
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(620, 210))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(650, 250))
 {
 	wxFlexGridSizer *box = new wxFlexGridSizer(2, 1, 0, 0);
 	wxFlexGridSizer *rows = new wxFlexGridSizer(3, 0, 0);
@@ -10,7 +10,9 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	wxGridSizer *s2_1 = new wxGridSizer(2, 1, 0, 0);
 	wxGridSizer *s3 = new wxGridSizer(4, 4, 0, 0);
 
-	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY);
+	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY | wxTE_RICH);
+	wxFont display_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	display->SetFont(display_font);
 	box->Add(display, 0, wxEXPAND);
 
 	buttons = new wxButton *[27];
