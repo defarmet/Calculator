@@ -8,7 +8,5 @@ private:
 	Main *frame1 = nullptr;
 
 public:
-	Program();
-	~Program();
 	virtual bool OnInit();
 };

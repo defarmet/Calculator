@@ -10,7 +10,5 @@ public:
 	wxTextCtrl *display;
 	unsigned char mode = 2;
 
-	void OnButtonClicked(wxCommandEvent &e);
-
-	wxDECLARE_EVENT_TABLE();
+	void on_click(wxCommandEvent &e);
 };

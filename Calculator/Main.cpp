@@ -1,36 +1,7 @@
 #include "Main.h"
+#include "ButtonFactory.h"
 
-wxBEGIN_EVENT_TABLE(Main, wxFrame)
-EVT_BUTTON(10000, Main::OnButtonClicked)
-EVT_BUTTON(10001, Main::OnButtonClicked)
-EVT_BUTTON(10002, Main::OnButtonClicked)
-EVT_BUTTON(10003, Main::OnButtonClicked)
-EVT_BUTTON(10004, Main::OnButtonClicked)
-EVT_BUTTON(10005, Main::OnButtonClicked)
-EVT_BUTTON(10006, Main::OnButtonClicked)
-EVT_BUTTON(10007, Main::OnButtonClicked)
-EVT_BUTTON(10008, Main::OnButtonClicked)
-EVT_BUTTON(10009, Main::OnButtonClicked)
-EVT_BUTTON(10010, Main::OnButtonClicked)
-EVT_BUTTON(10011, Main::OnButtonClicked)
-EVT_BUTTON(10012, Main::OnButtonClicked)
-EVT_BUTTON(10013, Main::OnButtonClicked)
-EVT_BUTTON(10014, Main::OnButtonClicked)
-EVT_BUTTON(10015, Main::OnButtonClicked)
-EVT_BUTTON(10016, Main::OnButtonClicked)
-EVT_BUTTON(10017, Main::OnButtonClicked)
-EVT_BUTTON(10018, Main::OnButtonClicked)
-EVT_BUTTON(10019, Main::OnButtonClicked)
-EVT_BUTTON(10020, Main::OnButtonClicked)
-EVT_BUTTON(10021, Main::OnButtonClicked)
-EVT_BUTTON(10022, Main::OnButtonClicked)
-EVT_BUTTON(10023, Main::OnButtonClicked)
-EVT_BUTTON(10024, Main::OnButtonClicked)
-EVT_BUTTON(10025, Main::OnButtonClicked)
-EVT_BUTTON(10026, Main::OnButtonClicked)
-wxEND_EVENT_TABLE()
-
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(600, 200))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(625, 250))
 {
 	wxFlexGridSizer *box = new wxFlexGridSizer(2, 1, 0, 0);
 	wxFlexGridSizer *rows = new wxFlexGridSizer(3, 0, 0);
@@ -39,70 +10,35 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	wxGridSizer *s2_1 = new wxGridSizer(2, 1, 0, 0);
 	wxGridSizer *s3 = new wxGridSizer(4, 4, 0, 0);
 
-	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY);
+	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY | wxTE_RICH);
+	wxFont display_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	display->SetFont(display_font);
 	box->Add(display, 0, wxEXPAND);
 
 	buttons = new wxButton *[27];
+	ButtonFactory::create_buttons(this, buttons);
+	for (int i = 0; i < 27; i++)
+		buttons[i]->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &Main::on_click, this);
 
-	wxFont button_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
+	const int order[] = {10, 11, 13, 14, 23, 24, 25, 26, 12, 15, 22,
+			7, 8, 9, 19, 4, 5, 6, 18, 1, 2, 3, 17, 0, 21, 20, 16};
 
-	for (int i = 0; i < 27; i++) {
-		buttons[i] = new wxButton(this, 10000 + i);
-		buttons[i]->SetFont(button_font);
-		if (i < 10)
-			buttons[i]->SetLabel(std::to_string(i));
-	}
+	int i;
+	for (i = 0; i < 8; i++)
+		s1->Add(buttons[order[i]], 1, wxEXPAND);
 
-	buttons[10]->SetLabel("A");
-	buttons[11]->SetLabel("B");
-	buttons[12]->SetLabel("C");
-	buttons[13]->SetLabel("D");
-	buttons[14]->SetLabel("E");
-	buttons[15]->SetLabel("F");
-	buttons[16]->SetLabel("+");
-	buttons[17]->SetLabel("-");
-	buttons[18]->SetLabel("*");
-	buttons[19]->SetLabel("/");
-	buttons[20]->SetLabel("MOD");
-	buttons[21]->SetLabel("CR");
-	buttons[22]->SetLabel("=");
-	buttons[23]->SetLabel("BIN");
-	buttons[24]->SetLabel("OCT");
-	buttons[25]->SetLabel("DEC");
-	buttons[26]->SetLabel("HEX");
-
-	s1->Add(buttons[10], 1, wxEXPAND);
-	s1->Add(buttons[11], 1, wxEXPAND);
-	s1->Add(buttons[13], 1, wxEXPAND);
-	s1->Add(buttons[14], 1, wxEXPAND);
-	s1->Add(buttons[23], 1, wxEXPAND);
-	s1->Add(buttons[24], 1, wxEXPAND);
-	s1->Add(buttons[25], 1, wxEXPAND);
-	s1->Add(buttons[26], 1, wxEXPAND);
 	rows->Add(s1, 1, wxEXPAND);
 
-	s2_1->Add(buttons[12], 1, wxEXPAND);
-	s2_1->Add(buttons[15], 1, wxEXPAND);
+	for (; i < 10; i++)
+		s2_1->Add(buttons[order[i]], 1, wxEXPAND);
+
 	s2->Add(s2_1, 1, wxEXPAND);
-	s2->Add(buttons[22], 1, wxEXPAND);
+	s2->Add(buttons[order[i++]], 1, wxEXPAND);
 	rows->Add(s2, 1, wxEXPAND);
 
-	s3->Add(buttons[7], 1, wxEXPAND);
-	s3->Add(buttons[8], 1, wxEXPAND);
-	s3->Add(buttons[9], 1, wxEXPAND);
-	s3->Add(buttons[19], 1, wxEXPAND);
-	s3->Add(buttons[4], 1, wxEXPAND);
-	s3->Add(buttons[5], 1, wxEXPAND);
-	s3->Add(buttons[6], 1, wxEXPAND);
-	s3->Add(buttons[18], 1, wxEXPAND);
-	s3->Add(buttons[1], 1, wxEXPAND);
-	s3->Add(buttons[2], 1, wxEXPAND);
-	s3->Add(buttons[3], 1, wxEXPAND);
-	s3->Add(buttons[17], 1, wxEXPAND);
-	s3->Add(buttons[0], 1, wxEXPAND);
-	s3->Add(buttons[21], 1, wxEXPAND);
-	s3->Add(buttons[20], 1, wxEXPAND);
-	s3->Add(buttons[16], 1, wxEXPAND);
+	for (; i < 27; i++)
+		s3->Add(buttons[order[i]], 1, wxEXPAND);
+	
 	rows->Add(s3, 1, wxEXPAND);
 	rows->AddGrowableRow(0);
 	for (int i = 0; i < 3; i++)
@@ -121,7 +57,7 @@ Main::~Main()
 	delete display;
 }
 
-void Main::OnButtonClicked(wxCommandEvent &e)
+void Main::on_click(wxCommandEvent &e)
 {
 	int index = e.GetId() - 10000;
 	*display << buttons[index]->GetLabel();

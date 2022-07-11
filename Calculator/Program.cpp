@@ -2,16 +2,6 @@
 
 wxIMPLEMENT_APP(Program);
 
-Program::Program()
-{
-
-}
-
-Program::~Program()
-{
-
-}
-
 bool Program::OnInit()
 {
 	frame1 = new Main();
