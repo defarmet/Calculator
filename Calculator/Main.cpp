@@ -10,7 +10,7 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	wxGridSizer *s2_1 = new wxGridSizer(2, 1, 0, 0);
 	wxGridSizer *s3 = new wxGridSizer(4, 4, 0, 0);
 
-	display = new wxTextCtrl(this, 9999, "", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY | wxTE_RICH);
+	display = new wxTextCtrl(this, 9999, "0", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT | wxTE_READONLY | wxTE_RICH);
 	wxFont display_font(16, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false);
 	display->SetFont(display_font);
 	box->Add(display, 0, wxEXPAND);
@@ -49,6 +49,8 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Calculator", wxPoint(30, 30), wxSize(
 	box->AddGrowableCol(0);
 
 	this->SetSizer(box);
+
+	calculator = CalculatorProcessor::get_instance();
 }
 
 Main::~Main()
@@ -60,11 +62,14 @@ Main::~Main()
 void Main::on_click(wxCommandEvent &e)
 {
 	int index = e.GetId() - 10000;
-	*display << buttons[index]->GetLabel();
-	/*switch (index) {
+
+	if (display->GetLineText(0).ToStdString() == "0")
+		display->Clear();
+
+	switch (index) {
 	case 8:
 	case 9:
-		if (mode < 2)
+		if (mode == 2 || mode == 8)
 			break;
 	case 2:
 	case 3:
@@ -72,7 +77,7 @@ void Main::on_click(wxCommandEvent &e)
 	case 5:
 	case 6:
 	case 7:
-		if (mode < 1)
+		if (mode == 2)
 			break;
 	case 0:
 	case 1:
@@ -85,56 +90,68 @@ void Main::on_click(wxCommandEvent &e)
 	case 13:
 	case 14:
 	case 15:
-		if (mode == 3)
+		if (mode == 16)
 			*display << (char)('A' + (index - 10));
 		break;
 
 	case 16:
+		calculator.calculate(display, mode, mode);
 		*display << '+';
 		break;
 
 	case 17:
+		calculator.calculate(display, mode, mode);
+		if (display->GetLineText(0).ToStdString() == "0")
+			display->Clear();
+
 		*display << '-';
 		break;
 
 	case 18:
+		calculator.calculate(display, mode, mode);
 		*display << '*';
 		break;
 
 	case 19:
+		calculator.calculate(display, mode, mode);
 		*display << '/';
 		break;
 
 	case 20:
+		calculator.calculate(display, mode, mode);
 		*display << '%';
 		break;
 
 	case 21:
 		display->Clear();
+		*display << 0;
 		break;
 
 	case 22:
-		*display << '=';
+		calculator.calculate(display, mode, mode);
 		break;
 
 	case 23:
-		mode = 0;
-		display->Clear();
+		calculator.calculate(display, mode, 2);
+		mode = 2;
 		break;
 
 	case 24:
-		mode = 1;
-		display->Clear();
+		calculator.calculate(display, mode, 8);
+		mode = 8;
 		break;
 
 	case 25:
-		mode = 2;
-		display->Clear();
+		calculator.calculate(display, mode, 10);
+		mode = 10;
 		break;
 
 	case 26:
-		mode = 3;
-		display->Clear();
+		calculator.calculate(display, mode, 16);
+		mode = 16;
 		break;
-	}*/
+	}
+
+	if (display->GetLineText(0).ToStdString() == "")
+		*display << 0;
 }
