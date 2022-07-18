@@ -11,7 +11,7 @@ private:
 	wxButton **buttons;
 	wxTextCtrl *display;
 	unsigned char mode = 10;
-	CalculatorProcessor calculator;
+	CalculatorProcessor *calculator;
 
 	void on_click(wxCommandEvent &e);
 };

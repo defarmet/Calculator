@@ -1,9 +1,14 @@
 #include "CalculatorProcessor.h"
 
-CalculatorProcessor &CalculatorProcessor::get_instance()
+CalculatorProcessor *CalculatorProcessor::calc = nullptr;
+
+CalculatorProcessor *CalculatorProcessor::get_instance()
 {
-	static CalculatorProcessor calc = CalculatorProcessor();
-	return calc;
+	if (CalculatorProcessor::calc == nullptr) {
+		CalculatorProcessor::calc = new CalculatorProcessor;
+	}
+
+	return CalculatorProcessor::calc;
 }
 
 void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, unsigned char out_mode)

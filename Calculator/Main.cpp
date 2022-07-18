@@ -95,12 +95,12 @@ void Main::on_click(wxCommandEvent &e)
 		break;
 
 	case 16:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		*display << '+';
 		break;
 
 	case 17:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		if (display->GetLineText(0).ToStdString() == "0")
 			display->Clear();
 
@@ -108,17 +108,17 @@ void Main::on_click(wxCommandEvent &e)
 		break;
 
 	case 18:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		*display << '*';
 		break;
 
 	case 19:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		*display << '/';
 		break;
 
 	case 20:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		*display << '%';
 		break;
 
@@ -128,26 +128,26 @@ void Main::on_click(wxCommandEvent &e)
 		break;
 
 	case 22:
-		calculator.calculate(display, mode, mode);
+		calculator->calculate(display, mode, mode);
 		break;
 
 	case 23:
-		calculator.calculate(display, mode, 2);
+		calculator->calculate(display, mode, 2);
 		mode = 2;
 		break;
 
 	case 24:
-		calculator.calculate(display, mode, 8);
+		calculator->calculate(display, mode, 8);
 		mode = 8;
 		break;
 
 	case 25:
-		calculator.calculate(display, mode, 10);
+		calculator->calculate(display, mode, 10);
 		mode = 10;
 		break;
 
 	case 26:
-		calculator.calculate(display, mode, 16);
+		calculator->calculate(display, mode, 16);
 		mode = 16;
 		break;
 	}
