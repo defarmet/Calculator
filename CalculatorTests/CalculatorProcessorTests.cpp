@@ -24,61 +24,61 @@ CalculatorProcessorTests::CalculatorProcessorTests() : wxFrame(nullptr, wxID_ANY
 	int y = rand();
 
 	*display << x << "+" << y;
-	calculator.calculate(display, 10, 10);
+	calculator->calculate(display, 10, 10);
 	std::string output = display->GetLineText(0).ToStdString();
 	assert(output == std::to_string(x + y));
 	display->Clear();
 
 	*display << x << "-" << y;
-	calculator.calculate(display, 10, 10);
+	calculator->calculate(display, 10, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == std::to_string(x - y));
 	display->Clear();
 
 	*display << x << "*" << y;
-	calculator.calculate(display, 10, 10);
+	calculator->calculate(display, 10, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == std::to_string(x * y));
 	display->Clear();
 
 	*display << x << "/" << y;
-	calculator.calculate(display, 10, 10);
+	calculator->calculate(display, 10, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == std::to_string(x / y));
 	display->Clear();
 
 	*display << x << "%" << y;
-	calculator.calculate(display, 10, 10);
+	calculator->calculate(display, 10, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == std::to_string(x % y));
 	display->Clear();
 
 	*display << 10 << "+" << 5;
-	calculator.calculate(display, 10, 2);
+	calculator->calculate(display, 10, 2);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == "1111");
 	display->Clear();
 
 	*display << 1010 << "+" << 101;
-	calculator.calculate(display, 2, 10);
+	calculator->calculate(display, 2, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == "15");
 	display->Clear();
 
 	*display << 1010 << "+" << 101;
-	calculator.calculate(display, 2, 16);
+	calculator->calculate(display, 2, 16);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == "F");
 	display->Clear();
 
 	*display << 'A' << "+" << 5;
-	calculator.calculate(display, 16, 2);
+	calculator->calculate(display, 16, 2);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == "1111");
 	display->Clear();
 
 	*display << 'A' << "+" << 5;
-	calculator.calculate(display, 16, 10);
+	calculator->calculate(display, 16, 10);
 	output = display->GetLineText(0).ToStdString();
 	assert(output == "15");
 	display->Clear();

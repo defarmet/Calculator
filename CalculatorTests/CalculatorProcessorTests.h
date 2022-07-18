@@ -10,5 +10,5 @@ public:
 private:
 	wxTextCtrl *display;
 	unsigned char mode = 10;
-	CalculatorProcessor calculator;
+	CalculatorProcessor *calculator;
 };
