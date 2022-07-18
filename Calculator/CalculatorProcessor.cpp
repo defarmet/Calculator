@@ -66,7 +66,7 @@ void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, 
 			break;
 
 		default:
-			store *=in_mode;
+			store *= in_mode;
 			store += input[i] - '0';
 		}
 	}
