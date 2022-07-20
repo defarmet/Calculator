@@ -122,12 +122,12 @@ namespace CalculatorTests
 			Assert::IsTrue(output == "0");
 			display->Clear();
 		}
-		TEST_METHOD(AddToNegative)
+		TEST_METHOD(SingleNumber)
 		{
-			*display << -2 << "+" << 5;
+			*display << 10;
 			calc->calculate(display, 10, 10);
 			std::string output = display->GetLineText(0).ToStdString();
-			Assert::IsTrue(output == "3");
+			Assert::IsTrue(output == "10");
 			display->Clear();
 		}
 		TEST_METHOD(SubtractFrom0)
