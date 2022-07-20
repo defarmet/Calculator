@@ -15,42 +15,20 @@ void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, 
 {
 	std::string input = display->GetLineText(0).ToStdString();
 	display->Clear();
-	long long result = 0;
-	long long store = 0;
+	unsigned long long result = 0;
+	unsigned long long store = 0;
 	char op = ' ';
+	bool flip = false;
 	for (size_t i = 0; i < input.length(); i++) {
 		switch (input[i]) {
-		case '+':
 		case '-':
+			if (i == 0)
+				flip = true;
+		case '+':
 		case '*':
 		case '/':
 		case '%':
-			if (op == ' ') {
-				result = store;
-			} else {
-				switch (op) {
-				case '+':
-					result += store;
-					break;
-
-				case '-':
-					result -= store;
-					break;
-
-				case '*':
-					result *= store;
-					break;
-
-				case '/':
-					result /= store;
-					break;
-
-				case '%':
-					result %= store;
-
-				}
-			}
-
+			result = store;
 			store = 0;
 			op = input[i];
 			break;
@@ -66,7 +44,7 @@ void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, 
 			break;
 
 		default:
-			store *=in_mode;
+			store *= in_mode;
 			store += input[i] - '0';
 		}
 	}
@@ -77,11 +55,28 @@ void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, 
 		break;
 
 	case '+':
-		result += store;
+		if (flip) {
+			if (store >= result) {
+				flip = false;
+				result = store - result;
+			} else {
+				result -= store;
+			}
+		} else {
+			result += store;
+		}
 		break;
 
 	case '-':
-		result -= store;
+		if (flip) {
+			result += store;
+		} else if (store > result) {
+			result = store - result;
+			flip = true;
+		} else {
+			result -= store;
+		}
+			
 		break;
 
 	case '*':
@@ -95,61 +90,30 @@ void CalculatorProcessor::calculate(wxTextCtrl *display, unsigned char in_mode, 
 	case '%':
 		result %= store;
 	}
-	store = 0;
 
 	std::string output = "";
-	bool flip = result < 0;
-	if (flip)
-		result = -result;
-
-	switch (out_mode) {
-	case 2:
-		for (; result > 0; result /= 2)
-			output.insert(0, std::to_string(result % 2));
-
-		if (flip)
-			output.insert(0, "-");
-
-		*display << output;
-		break;
-
-	case 8:
-		for (; result > 0; result /= 8)
-			output.insert(0, std::to_string(result % 8));
-
-		if (flip)
-			output.insert(0, "-");
-
-		*display << output;
-		break;
-
-	case 10:
-		if (flip)
-			result = -result;
-
-		*display << std::to_string(result);
-		break;
-
-	case 16:
-		for (; result > 0; result /= 16) {
-			switch (result % 16) {
-			case 10:
-			case 11:
-			case 12:
-			case 13:
-			case 14:
-			case 15:
-				output.insert(0, std::string(1, (result % 16 - 10) + 'A'));
-				break;
-
-			default:
-				output.insert(0, std::to_string(result % 16));
-			}
-		}
-		if (flip)
-			output.insert(0, std::string(1, '-'));
-
-		*display << output;
-		break;
+	if (result == 0) {
+		flip = false;
+		output = "0";
 	}
+
+	for (; result > 0; result /= out_mode) {
+		switch (result % out_mode) {
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+			output.insert(0, std::string(1, (result % out_mode - 10) + 'A'));
+			break;
+
+		default:
+			output.insert(0, std::to_string(result % out_mode));
+		}
+	}
+	if (flip)
+		output.insert(0, "-");
+
+	*display << output;
 }
